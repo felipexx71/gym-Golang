@@ -11,43 +11,69 @@ var ListPerson []models.Person
 var ListRecords []models.Records
 
 func readList() {
-	for i := range ListPerson {
+	if len(ListPerson) != 0 {
+		for i := range ListPerson {
+			nextLine()
+			fmt.Println("Nome(s): " + ListPerson[i].Name())
+			fmt.Println("Pesos(s): " + ListPerson[i].Weight())
+			fmt.Println("Altura(s): " + ListPerson[i].Height())
+		}
+	} else {
 		nextLine()
-		fmt.Println("Nome(s): " + ListPerson[i].Name())
-		fmt.Println("Pesos(s): " + ListPerson[i].Weight())
-		fmt.Println("Altura(s): " + ListPerson[i].Height())
+		fmt.Print("Não há registros encontrados!")
 	}
 }
 
 func readName() {
-	for i := range ListPerson {
-		fmt.Println("Nome(s): " + ListPerson[i].Name())
+	if len(ListPerson) != 0 {
+		for i := range ListPerson {
+			fmt.Print("Nome(s): " + ListPerson[i].Name())
+			nextLine()
+		}
+	} else {
+		fmt.Print("Não há nomes cadastrados!")
 	}
+
 }
 
 func readWeight() {
-	for i := range ListPerson {
-		fmt.Println("Pesos(s): " + ListPerson[i].Weight())
+	if len(ListPerson) != 0 {
+		for i := range ListPerson {
+			fmt.Print("Pesos(s): " + ListPerson[i].Weight())
+			nextLine()
+		}
+	} else {
+		fmt.Print("Não há pesos cadastrados!")
 	}
 }
 
 func readHeight() {
-	for i := range ListPerson {
-		fmt.Println("Altura(s): " + ListPerson[i].Height())
+	if len(ListPerson) != 0 {
+		for i := range ListPerson {
+			fmt.Print("Altura(s): " + ListPerson[i].Height())
+			nextLine()
+		}
+	} else {
+		fmt.Print("Não há alturas cadastradas!")
 	}
 }
 
 func findPersonByName() {
 	var finder string
 
-	for i := range ListPerson {
-		fmt.Print("Digite o nome a ser buscado: ")
-		fmt.Scan(&finder)
-		if ListPerson[i].Name() == finder {
-			fmt.Print("o nome " + finder + " foi achado!")
-		} else {
-			fmt.Print("Não é possivel buscar o nome: " + finder)
+	if len(ListPerson) != 0 {
+		for i := range ListPerson {
+			fmt.Print("Digite o nome a ser buscado: ")
+			fmt.Scan(&finder)
+			if ListPerson[i].Name() == finder {
+				nextLine()
+				fmt.Print("o nome " + finder + " foi achado!")
+			} else {
+				fmt.Print("Não é possível buscar o nome: " + finder + "\n")
+			}
 		}
+	} else {
+		fmt.Print("Não há cadastros encontrados!")
 	}
 }
 
@@ -114,7 +140,8 @@ func SwitchOption() {
 			continue
 		default:
 			nextLine()
-			println("Opção inválida")
+			println("Opção inválida!")
+			nextLine()
 			continue
 		}
 	}
@@ -124,16 +151,108 @@ func LoginInSystem() {
 	var user string
 	var pass string
 
-	for i := 0; i < 5; i++ {
+	if len(ListRecords) == 0 {
 		nextLine()
-		fmt.Print("Digite o seu email: ")
-		fmt.Scan(&user)
-		fmt.Print("Digite a sua senha: ")
-		fmt.Scan(&pass)
-		if ListRecords[0].Email() == user && ListRecords[0].Password() == pass || ListRecords[1].Email() == user && ListRecords[1].Password() == pass || ListRecords[2].Email() == user && ListRecords[2].Password() == pass || ListRecords[3].Email() == user && ListRecords[3].Password() == pass || ListRecords[4].Email() == user && ListRecords[4].Password() == pass {
-			SwitchOption()
-		} else {
-			fmt.Print("Não foi possível buscar esse cadastro. Tente novamente!\n")
+		fmt.Println("Não há cadastros no sistema!")
+	} else if len(ListRecords) == 1 {
+		for i := 0; i < 5; i++ {
+			nextLine()
+			fmt.Print("Digite o seu email: ")
+			fmt.Scan(&user)
+			fmt.Print("Digite a sua senha: ")
+			fmt.Scan(&pass)
+
+			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+				SwitchOption()
+			} else {
+				nextLine()
+				fmt.Println("Não há cadastros com esse usuário e senha! Aperte 1 para poder registrar")
+				return
+			}
+		}
+	} else if len(ListRecords) == 2 {
+		for i := 0; i < 5; i++ {
+			nextLine()
+			fmt.Print("Digite o seu email: ")
+			fmt.Scan(&user)
+			fmt.Print("Digite a sua senha: ")
+			fmt.Scan(&pass)
+
+			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+				SwitchOption()
+			} else {
+				nextLine()
+				fmt.Println("Não há cadastros com esse usuário e senha! Aperte 1 para poder registrar")
+				return
+			}
+		}
+	} else if len(ListRecords) == 3 {
+		for i := 0; i < 5; i++ {
+			nextLine()
+			fmt.Print("Digite o seu email: ")
+			fmt.Scan(&user)
+			fmt.Print("Digite a sua senha: ")
+			fmt.Scan(&pass)
+
+			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[2].Email() == user && ListRecords[2].Password() == pass {
+				SwitchOption()
+			} else {
+				nextLine()
+				fmt.Println("Não há cadastros com esse usuário e senha! Aperte 1 para poder registrar")
+				return
+			}
+		}
+	} else if len(ListRecords) == 4 {
+		for i := 0; i < 5; i++ {
+			nextLine()
+			fmt.Print("Digite o seu email: ")
+			fmt.Scan(&user)
+			fmt.Print("Digite a sua senha: ")
+			fmt.Scan(&pass)
+
+			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[2].Email() == user && ListRecords[2].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[3].Email() == user && ListRecords[3].Password() == pass {
+				SwitchOption()
+			} else {
+				nextLine()
+				fmt.Println("Não há cadastros com esse usuário e senha! Aperte 1 para poder registrar")
+				return
+			}
+		}
+	} else if len(ListRecords) == 5 {
+		for i := 0; i < 5; i++ {
+			nextLine()
+			fmt.Print("Digite o seu email: ")
+			fmt.Scan(&user)
+			fmt.Print("Digite a sua senha: ")
+			fmt.Scan(&pass)
+
+			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[2].Email() == user && ListRecords[2].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[3].Email() == user && ListRecords[3].Password() == pass {
+				SwitchOption()
+			} else if ListRecords[4].Email() == user && ListRecords[4].Password() == pass {
+				SwitchOption()
+			} else {
+				nextLine()
+				fmt.Println("Não há cadastros com esse usuário e senha! Aperte 1 para poder registrar")
+				return
+			}
 		}
 	}
 }
@@ -144,19 +263,30 @@ func RegisterInSystem() {
 	var email string
 	var password string
 
-	fmt.Print("Digite o seu email: ")
-	fmt.Scan(&email)
-	record.SetEmail(email)
-	fmt.Print("Digite a sua senha: ")
-	fmt.Scan(&password)
-	record.SetPassword(password)
+	if len(ListRecords) < 5 {
+		fmt.Print("Digite o seu email: ")
+		fmt.Scan(&email)
+		record.SetEmail(email)
+		fmt.Print("Digite a sua senha: ")
+		fmt.Scan(&password)
+		record.SetPassword(password)
 
-	ListRecords = append(ListRecords, record)
+		ListRecords = append(ListRecords, record)
+	} else {
+		nextLine()
+		fmt.Println("A quantidade de usuários foi excedida!")
+	}
 }
 
 func ShowRecords() {
-	for i := range ListRecords {
+
+	if len(ListRecords) != 0 {
+		for i := range ListRecords {
+			fmt.Println("Email: " + ListRecords[i].Email())
+			nextLine()
+		}
+	} else {
 		nextLine()
-		fmt.Println("Email: " + ListRecords[i].Email())
+		fmt.Println("A lista está vazia!")
 	}
 }
