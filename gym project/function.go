@@ -9,21 +9,6 @@ import (
 
 var ListRecords []models.Records
 
-func showList() {
-	persons := readList()
-
-	for _, person := range persons {
-		nextLine()
-		fmt.Println("##########")
-		fmt.Println("Nome: ", person.GetName())
-		fmt.Println("Peso: ", person.GetWeight())
-		fmt.Println("Altura: ", person.GetHeight())
-		fmt.Println("##########")
-		nextLine()
-	}
-
-}
-
 func readList() []models.Person {
 	conn, err := getConnection()
 	if err != nil {
@@ -41,6 +26,19 @@ func readList() []models.Person {
 	return person
 }
 
+func showList() {
+	persons := readList()
+
+	for _, person := range persons {
+		nextLine()
+		fmt.Println("##########")
+		fmt.Println("Nome: ", person.GetName())
+		fmt.Println("Peso: ", person.GetWeight())
+		fmt.Println("Altura: ", person.GetHeight())
+		fmt.Println("##########")
+	}
+}
+
 func readName() {
 	persons := readList()
 
@@ -49,7 +47,6 @@ func readName() {
 		fmt.Println("##########")
 		fmt.Println("Nome: ", person.GetName())
 		fmt.Println("##########")
-		nextLine()
 	}
 }
 
@@ -61,7 +58,6 @@ func readWeight() {
 		fmt.Println("##########")
 		fmt.Println("Peso: ", person.GetWeight())
 		fmt.Println("##########")
-		nextLine()
 	}
 }
 
@@ -73,7 +69,6 @@ func readHeight() {
 		fmt.Println("##########")
 		fmt.Println("Altura: ", person.GetHeight())
 		fmt.Println("##########")
-		nextLine()
 	}
 }
 
@@ -98,6 +93,8 @@ func findPersonByName() {
 			continue
 		}
 	}
+	nextLine()
+	fmt.Print("O nome pesquisado não foi encontrado!")
 }
 
 func nextLine() {
