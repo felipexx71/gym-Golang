@@ -12,6 +12,8 @@ insert into
     person (name, weight, height)
 values ('Jorginho',130 , 150);
 
+
+drop table person;
 select id,
        name,
        weight,

@@ -144,6 +144,60 @@ func registerList() {
 	}
 }
 
+func updateInDB() {
+	Scan := bufio.NewScanner(os.Stdin)
+
+	conn, err := getConnection()
+	if err != nil {
+		returnErr(err)
+	}
+	defer conn.Close()
+
+	updateLine := `update person SET name = $2 where name = $1`
+
+	showList()
+	nextLine()
+
+	fmt.Print("Digite o nome atual: ")
+	Scan.Scan()
+	oldName := Scan.Text()
+	nextLine()
+
+	fmt.Print("Digite o nome atualizado: ")
+	Scan.Scan()
+	currentName := Scan.Text()
+
+	_, err = conn.Exec(updateLine, oldName, currentName)
+	if err != nil {
+		returnErr(err)
+	}
+}
+
+func deleteInDB() {
+	Scan := bufio.NewScanner(os.Stdin)
+
+	conn, err := getConnection()
+	if err != nil {
+		returnErr(err)
+	}
+
+	defer conn.Close()
+
+	deleteLine := `delete from person where name = $1`
+
+	showList()
+	nextLine()
+
+	fmt.Print("Digite um nome a ser apagado: ")
+	Scan.Scan()
+	finder := Scan.Text()
+
+	_, err = conn.Exec(deleteLine, finder)
+	if err != nil {
+		returnErr(err)
+	}
+}
+
 func SwitchOption() {
 	var opc int
 
@@ -184,6 +238,16 @@ func SwitchOption() {
 		case 6:
 			nextLine()
 			findPersonByName()
+			nextLine()
+			continue
+		case 7:
+			nextLine()
+			deleteInDB()
+			nextLine()
+			continue
+		case 8:
+			nextLine()
+			updateInDB()
 			nextLine()
 			continue
 		default:
