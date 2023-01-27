@@ -8,10 +8,6 @@ create table if not exists person  (
     height decimal(3, 2) not null
 );
 
-insert into
-    person (name, weight, height)
-values ('Jorginho',130 , 150);
-
 
 drop table person;
 select id,

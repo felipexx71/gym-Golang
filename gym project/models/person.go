@@ -1,6 +1,7 @@
 package models
 
 type Person struct {
+	Id     int     `db:"id"`
 	Name   string  `db:"name"`
 	Weight float64 `db:"weight"`
 	Height float64 `db:"height"`
@@ -31,6 +32,10 @@ func (p Person) GetHeight() float64 {
 
 func (p *Person) SetHeight(height float64) {
 	p.Height = height
+}
+
+func (p Person) GetId() int {
+	return p.Id
 }
 
 func (r Records) GetEmail() string {

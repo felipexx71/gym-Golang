@@ -21,7 +21,7 @@ func readList() []models.Person {
 
 	var person []models.Person
 
-	err = conn.Select(&person, "select name, weight, height from person")
+	err = conn.Select(&person, "select id, name, weight, height from person")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,6 +34,7 @@ func showList() {
 	for _, person := range persons {
 		nextLine()
 		fmt.Println("##########")
+		fmt.Println("Identificador: ", person.GetId())
 		fmt.Println("Nome: ", person.GetName())
 		fmt.Println("Peso: ", person.GetWeight())
 		fmt.Println("Altura: ", person.GetHeight())
@@ -75,16 +76,12 @@ func readHeight() {
 }
 
 func findPersonByName() {
+	Scan := bufio.NewScanner(os.Stdin)
 	persons := readList()
 
-	var finder string
-
 	fmt.Print("Digite o nome a ser buscado: ")
-
-	_, err := fmt.Scan(&finder)
-	if err != nil {
-		returnErr(err)
-	}
+	Scan.Scan()
+	finder := Scan.Text()
 
 	for _, person := range persons {
 		if finder == person.GetName() {
