@@ -2,8 +2,16 @@ package main
 
 import (
 	"fmt"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"gym/ui"
 )
+
+func getConnection() (*sqlx.DB, error) {
+	conn, err := sqlx.Open("postgres", "postgres://postgres:12345678@localhost:5432/exemplo_db?sslmode=disable")
+	return conn, err
+}
 
 func main() {
 	var choice int

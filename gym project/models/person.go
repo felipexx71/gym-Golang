@@ -1,50 +1,50 @@
 package models
 
 type Person struct {
-	name   string
-	weight string
-	height string
+	Name   string `db:"name"`
+	Weight string `db:"weight"`
+	Height string `db:"height"`
 }
 type Records struct {
-	email    string
-	password string
+	Email    string `db:"email"`
+	Password string `db:"password"`
 }
 
-func (p Person) Name() string {
-	return p.name
+func (p Person) GetName() string {
+	return p.Name
 }
 
 func (p *Person) SetName(name string) {
-	p.name = name
+	p.Name = name
 }
 
-func (p Person) Weight() string {
-	return p.weight
+func (p Person) GetWeight() string {
+	return p.Weight
 }
 
 func (p *Person) SetWeight(weight string) {
-	p.weight = weight
+	p.Weight = weight
 }
-func (p Person) Height() string {
-	return p.height
+func (p Person) GetHeight() string {
+	return p.Height
 }
 
 func (p *Person) SetHeight(height string) {
-	p.height = height
+	p.Height = height
 }
 
-func (r Records) Email() string {
-	return r.email
+func (r Records) GetEmail() string {
+	return r.Email
 }
 
 func (r *Records) SetEmail(email string) {
-	r.email = email
+	r.Email = email
 }
 
-func (r Records) Password() string {
-	return r.password
+func (r Records) GetPassword() string {
+	return r.Password
 }
 
 func (r *Records) SetPassword(password string) {
-	r.password = password
+	r.Password = password
 }

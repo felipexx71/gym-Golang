@@ -4,57 +4,77 @@ import (
 	"fmt"
 	"gym/models"
 	"gym/ui"
+	"log"
 )
 
 var ListPerson []models.Person
 
 var ListRecords []models.Records
 
-func readList() {
-	if len(ListPerson) != 0 {
-		for i := range ListPerson {
-			nextLine()
-			fmt.Println("Nome(s): " + ListPerson[i].Name())
-			fmt.Println("Pesos(s): " + ListPerson[i].Weight())
-			fmt.Println("Altura(s): " + ListPerson[i].Height())
-		}
-	} else {
+func showList() {
+	persons := readList()
+
+	for _, person := range persons {
 		nextLine()
-		fmt.Print("Não há registros encontrados!")
+		fmt.Println("##########")
+		fmt.Println("Nome: ", person.GetName())
+		fmt.Println("Peso: ", person.GetWeight())
+		fmt.Println("Altura: ", person.GetHeight())
+		fmt.Println("##########")
+		nextLine()
 	}
+
+}
+
+func readList() []models.Person {
+	conn, err := getConnection()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	var person []models.Person
+
+	err = conn.Select(&person, "select name, weight, height from person")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return person
 }
 
 func readName() {
-	if len(ListPerson) != 0 {
-		for i := range ListPerson {
-			fmt.Print("Nome(s): " + ListPerson[i].Name())
-			nextLine()
-		}
-	} else {
-		fmt.Print("Não há nomes cadastrados!")
-	}
+	persons := readList()
 
+	for _, person := range persons {
+		nextLine()
+		fmt.Println("##########")
+		fmt.Println("Nome: ", person.GetName())
+		fmt.Println("##########")
+		nextLine()
+	}
 }
 
 func readWeight() {
-	if len(ListPerson) != 0 {
-		for i := range ListPerson {
-			fmt.Print("Pesos(s): " + ListPerson[i].Weight())
-			nextLine()
-		}
-	} else {
-		fmt.Print("Não há pesos cadastrados!")
+	persons := readList()
+
+	for _, person := range persons {
+		nextLine()
+		fmt.Println("##########")
+		fmt.Println("Peso: ", person.GetWeight())
+		fmt.Println("##########")
+		nextLine()
 	}
 }
 
 func readHeight() {
-	if len(ListPerson) != 0 {
-		for i := range ListPerson {
-			fmt.Print("Altura(s): " + ListPerson[i].Height())
-			nextLine()
-		}
-	} else {
-		fmt.Print("Não há alturas cadastradas!")
+	persons := readList()
+
+	for _, person := range persons {
+		nextLine()
+		fmt.Println("##########")
+		fmt.Println("Altura: ", person.GetHeight())
+		fmt.Println("##########")
+		nextLine()
 	}
 }
 
@@ -65,7 +85,7 @@ func findPersonByName() {
 		for i := range ListPerson {
 			fmt.Print("Digite o nome a ser buscado: ")
 			fmt.Scan(&finder)
-			if ListPerson[i].Name() == finder {
+			if ListPerson[i].GetName() == finder {
 				nextLine()
 				fmt.Print("o nome " + finder + " foi achado!")
 			} else {
@@ -98,7 +118,19 @@ func registerList() {
 	fmt.Scan(&height)
 	person.SetHeight(height)
 
-	ListPerson = append(ListPerson, person)
+	conn, err := getConnection()
+	if err != nil {
+		panic(err)
+	}
+
+	defer conn.Close()
+
+	insertInto := `insert into person (name, weight, height) values ($1, $2, $3)`
+
+	_, err = conn.Exec(insertInto, person.GetName(), person.GetWeight(), person.GetHeight())
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func SwitchOption() {
@@ -115,7 +147,7 @@ func SwitchOption() {
 			nextLine()
 			continue
 		case 2:
-			readList()
+			showList()
 			nextLine()
 			continue
 		case 3:
@@ -162,7 +194,7 @@ func LoginInSystem() {
 			fmt.Print("Digite a sua senha: ")
 			fmt.Scan(&pass)
 
-			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
 			} else {
 				nextLine()
@@ -178,9 +210,9 @@ func LoginInSystem() {
 			fmt.Print("Digite a sua senha: ")
 			fmt.Scan(&pass)
 
-			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+			} else if ListRecords[1].GetEmail() == user && ListRecords[1].GetPassword() == pass {
 				SwitchOption()
 			} else {
 				nextLine()
@@ -196,11 +228,11 @@ func LoginInSystem() {
 			fmt.Print("Digite a sua senha: ")
 			fmt.Scan(&pass)
 
-			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+			} else if ListRecords[1].GetEmail() == user && ListRecords[1].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[2].Email() == user && ListRecords[2].Password() == pass {
+			} else if ListRecords[2].GetEmail() == user && ListRecords[2].GetPassword() == pass {
 				SwitchOption()
 			} else {
 				nextLine()
@@ -216,13 +248,13 @@ func LoginInSystem() {
 			fmt.Print("Digite a sua senha: ")
 			fmt.Scan(&pass)
 
-			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+			} else if ListRecords[1].GetEmail() == user && ListRecords[1].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[2].Email() == user && ListRecords[2].Password() == pass {
+			} else if ListRecords[2].GetEmail() == user && ListRecords[2].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[3].Email() == user && ListRecords[3].Password() == pass {
+			} else if ListRecords[3].GetEmail() == user && ListRecords[3].GetPassword() == pass {
 				SwitchOption()
 			} else {
 				nextLine()
@@ -238,15 +270,15 @@ func LoginInSystem() {
 			fmt.Print("Digite a sua senha: ")
 			fmt.Scan(&pass)
 
-			if ListRecords[0].Email() == user && ListRecords[0].Password() == pass {
+			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[1].Email() == user && ListRecords[1].Password() == pass {
+			} else if ListRecords[1].GetEmail() == user && ListRecords[1].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[2].Email() == user && ListRecords[2].Password() == pass {
+			} else if ListRecords[2].GetEmail() == user && ListRecords[2].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[3].Email() == user && ListRecords[3].Password() == pass {
+			} else if ListRecords[3].GetEmail() == user && ListRecords[3].GetPassword() == pass {
 				SwitchOption()
-			} else if ListRecords[4].Email() == user && ListRecords[4].Password() == pass {
+			} else if ListRecords[4].GetEmail() == user && ListRecords[4].GetPassword() == pass {
 				SwitchOption()
 			} else {
 				nextLine()
@@ -282,7 +314,7 @@ func ShowRecords() {
 
 	if len(ListRecords) != 0 {
 		for i := range ListRecords {
-			fmt.Println("Email: " + ListRecords[i].Email())
+			fmt.Println("Email: " + ListRecords[i].GetEmail())
 			nextLine()
 		}
 	} else {
