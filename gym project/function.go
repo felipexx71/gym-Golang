@@ -7,8 +7,6 @@ import (
 	"log"
 )
 
-var ListPerson []models.Person
-
 var ListRecords []models.Records
 
 func showList() {
@@ -31,6 +29,7 @@ func readList() []models.Person {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer conn.Close()
 
 	var person []models.Person
@@ -79,21 +78,25 @@ func readHeight() {
 }
 
 func findPersonByName() {
+	persons := readList()
+
 	var finder string
 
-	if len(ListPerson) != 0 {
-		for i := range ListPerson {
-			fmt.Print("Digite o nome a ser buscado: ")
-			fmt.Scan(&finder)
-			if ListPerson[i].GetName() == finder {
-				nextLine()
-				fmt.Print("o nome " + finder + " foi achado!")
-			} else {
-				fmt.Print("Não é possível buscar o nome: " + finder + "\n")
-			}
+	fmt.Print("Digite o nome a ser buscado: ")
+
+	_, err := fmt.Scan(&finder)
+	if err != nil {
+		returnErr(err)
+	}
+
+	for _, person := range persons {
+		if finder == person.GetName() {
+			nextLine()
+			fmt.Print("O nome: ", finder, " foi achado no banco de dados!")
+			return
+		} else {
+			continue
 		}
-	} else {
-		fmt.Print("Não há cadastros encontrados!")
 	}
 }
 
@@ -109,13 +112,24 @@ func registerList() {
 	var height string
 
 	fmt.Println("Digite um nome:")
-	fmt.Scan(&name)
+	_, err := fmt.Scan(&name)
+	if err != nil {
+		returnErr(err)
+	}
 	person.SetName(name)
+
 	fmt.Println("Digite um peso:")
-	fmt.Scan(&weight)
+	_, err = fmt.Scan(&weight)
+	if err != nil {
+		returnErr(err)
+	}
 	person.SetWeight(weight)
+
 	fmt.Println("Digite uma altura:")
-	fmt.Scan(&height)
+	_, err = fmt.Scan(&height)
+	if err != nil {
+		returnErr(err)
+	}
 	person.SetHeight(height)
 
 	conn, err := getConnection()
@@ -139,7 +153,12 @@ func SwitchOption() {
 	for {
 		fmt.Print(ui.ShowLogo())
 		fmt.Print(ui.ShowMenuFunctions())
-		fmt.Scan(&opc)
+
+		_, err := fmt.Scan(&opc)
+		if err != nil {
+			returnErr(err)
+		}
+
 		switch opc {
 		case 1:
 			nextLine()
@@ -190,9 +209,16 @@ func LoginInSystem() {
 		for i := 0; i < 5; i++ {
 			nextLine()
 			fmt.Print("Digite o seu email: ")
-			fmt.Scan(&user)
+			_, err := fmt.Scan(&user)
+			if err != nil {
+				returnErr(err)
+			}
+
 			fmt.Print("Digite a sua senha: ")
-			fmt.Scan(&pass)
+			_, err = fmt.Scan(&pass)
+			if err != nil {
+				returnErr(err)
+			}
 
 			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
@@ -206,9 +232,16 @@ func LoginInSystem() {
 		for i := 0; i < 5; i++ {
 			nextLine()
 			fmt.Print("Digite o seu email: ")
-			fmt.Scan(&user)
+			_, err := fmt.Scan(&user)
+			if err != nil {
+				returnErr(err)
+			}
+
 			fmt.Print("Digite a sua senha: ")
-			fmt.Scan(&pass)
+			_, err = fmt.Scan(&pass)
+			if err != nil {
+				returnErr(err)
+			}
 
 			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
@@ -224,9 +257,16 @@ func LoginInSystem() {
 		for i := 0; i < 5; i++ {
 			nextLine()
 			fmt.Print("Digite o seu email: ")
-			fmt.Scan(&user)
+			_, err := fmt.Scan(&user)
+			if err != nil {
+				returnErr(err)
+			}
+
 			fmt.Print("Digite a sua senha: ")
-			fmt.Scan(&pass)
+			_, err = fmt.Scan(&pass)
+			if err != nil {
+				returnErr(err)
+			}
 
 			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
@@ -244,9 +284,16 @@ func LoginInSystem() {
 		for i := 0; i < 5; i++ {
 			nextLine()
 			fmt.Print("Digite o seu email: ")
-			fmt.Scan(&user)
+			_, err := fmt.Scan(&user)
+			if err != nil {
+				returnErr(err)
+			}
+
 			fmt.Print("Digite a sua senha: ")
-			fmt.Scan(&pass)
+			_, err = fmt.Scan(&pass)
+			if err != nil {
+				returnErr(err)
+			}
 
 			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
@@ -266,9 +313,16 @@ func LoginInSystem() {
 		for i := 0; i < 5; i++ {
 			nextLine()
 			fmt.Print("Digite o seu email: ")
-			fmt.Scan(&user)
+			_, err := fmt.Scan(&user)
+			if err != nil {
+				returnErr(err)
+			}
+
 			fmt.Print("Digite a sua senha: ")
-			fmt.Scan(&pass)
+			_, err = fmt.Scan(&pass)
+			if err != nil {
+				returnErr(err)
+			}
 
 			if ListRecords[0].GetEmail() == user && ListRecords[0].GetPassword() == pass {
 				SwitchOption()
@@ -297,10 +351,17 @@ func RegisterInSystem() {
 
 	if len(ListRecords) < 5 {
 		fmt.Print("Digite o seu email: ")
-		fmt.Scan(&email)
+		_, err := fmt.Scan(&email)
+		if err != nil {
+			returnErr(err)
+		}
 		record.SetEmail(email)
+
 		fmt.Print("Digite a sua senha: ")
-		fmt.Scan(&password)
+		_, err = fmt.Scan(&password)
+		if err != nil {
+			returnErr(err)
+		}
 		record.SetPassword(password)
 
 		ListRecords = append(ListRecords, record)
@@ -321,4 +382,8 @@ func ShowRecords() {
 		nextLine()
 		fmt.Println("A lista está vazia!")
 	}
+}
+
+func returnErr(err error) {
+	log.Fatal(err)
 }

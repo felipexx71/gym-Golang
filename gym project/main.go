@@ -17,7 +17,11 @@ func main() {
 	var choice int
 	for {
 		fmt.Print(ui.ShowMenuLogin())
-		fmt.Scan(&choice)
+		_, err := fmt.Scan(&choice)
+		if err != nil {
+			returnErr(err)
+		}
+
 		switch choice {
 		case 1:
 			RegisterInSystem()
