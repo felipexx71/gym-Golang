@@ -150,29 +150,30 @@ func updateInDB() {
 	}
 	defer conn.Close()
 
-	updateLine := `update person SET name = $2 where name = $1`
+	updateLine := `update person SET name = $2 where id = $1`
 
 	showList()
 	nextLine()
 
-	fmt.Print("Digite o nome atual: ")
-	Scan.Scan()
-	oldName := Scan.Text()
+	var id int
+	fmt.Print("Digite o identificador pessoal: ")
+	_, err = fmt.Scan(&id)
+	if err != nil {
+		returnErr(err)
+	}
 	nextLine()
 
 	fmt.Print("Digite o nome atualizado: ")
 	Scan.Scan()
 	currentName := Scan.Text()
 
-	_, err = conn.Exec(updateLine, oldName, currentName)
+	_, err = conn.Exec(updateLine, id, currentName)
 	if err != nil {
 		returnErr(err)
 	}
 }
 
 func deleteInDB() {
-	Scan := bufio.NewScanner(os.Stdin)
-
 	conn, err := getConnection()
 	if err != nil {
 		returnErr(err)
@@ -180,16 +181,20 @@ func deleteInDB() {
 
 	defer conn.Close()
 
-	deleteLine := `delete from person where name = $1`
+	deleteLine := `delete from person where id = $1`
 
 	showList()
 	nextLine()
 
-	fmt.Print("Digite um nome a ser apagado: ")
-	Scan.Scan()
-	finder := Scan.Text()
+	var id int
 
-	_, err = conn.Exec(deleteLine, finder)
+	fmt.Print("Digite o identificador da pessoa a ser apagado: ")
+	_, err = fmt.Scan(&id)
+	if err != nil {
+		returnErr(err)
+	}
+
+	_, err = conn.Exec(deleteLine, id)
 	if err != nil {
 		returnErr(err)
 	}
