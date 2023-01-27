@@ -1,9 +1,9 @@
 package models
 
 type Person struct {
-	Name   string `db:"name"`
-	Weight string `db:"weight"`
-	Height string `db:"height"`
+	Name   string  `db:"name"`
+	Weight float64 `db:"weight"`
+	Height float64 `db:"height"`
 }
 type Records struct {
 	Email    string `db:"email"`
@@ -18,18 +18,18 @@ func (p *Person) SetName(name string) {
 	p.Name = name
 }
 
-func (p Person) GetWeight() string {
+func (p Person) GetWeight() float64 {
 	return p.Weight
 }
 
-func (p *Person) SetWeight(weight string) {
+func (p *Person) SetWeight(weight float64) {
 	p.Weight = weight
 }
-func (p Person) GetHeight() string {
+func (p Person) GetHeight() float64 {
 	return p.Height
 }
 
-func (p *Person) SetHeight(height string) {
+func (p *Person) SetHeight(height float64) {
 	p.Height = height
 }
 

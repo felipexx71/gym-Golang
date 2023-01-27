@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"gym/models"
 	"gym/ui"
 	"log"
+	"os"
 )
 
 var ListRecords []models.Records
@@ -103,27 +105,25 @@ func nextLine() {
 
 func registerList() {
 	person := models.Person{}
+	scan := bufio.NewScanner(os.Stdin)
 
-	var name string
-	var weight string
-	var height string
+	var weight float64
+	var height float64
 
 	fmt.Println("Digite um nome:")
-	_, err := fmt.Scan(&name)
-	if err != nil {
-		returnErr(err)
-	}
+	scan.Scan()
+	name := scan.Text()
 	person.SetName(name)
 
 	fmt.Println("Digite um peso:")
-	_, err = fmt.Scan(&weight)
+	_, err := fmt.Scanln(&weight)
 	if err != nil {
 		returnErr(err)
 	}
 	person.SetWeight(weight)
 
 	fmt.Println("Digite uma altura:")
-	_, err = fmt.Scan(&height)
+	_, err = fmt.Scanln(&height)
 	if err != nil {
 		returnErr(err)
 	}
