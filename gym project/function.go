@@ -3,9 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/labstack/echo/v4"
 	"gym/models"
 	"gym/ui"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -139,6 +141,12 @@ func registerList() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Name: "+name)
+	})
+	e.Start(":8000")
 }
 
 func updateInDB() {
