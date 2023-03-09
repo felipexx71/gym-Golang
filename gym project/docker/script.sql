@@ -1,4 +1,6 @@
-\connect exemplo_db
+create database postgres
+
+\connect postgres
 
 create table if not exists person  (
     id serial not null
@@ -9,7 +11,6 @@ create table if not exists person  (
 );
 
 
-drop table person;
 select id,
        name,
        weight,

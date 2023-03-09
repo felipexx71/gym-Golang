@@ -9,7 +9,7 @@ import (
 )
 
 func getConnection() (*sqlx.DB, error) {
-	conn, err := sqlx.Open("postgres", "postgres://postgres:12345678@localhost:5432/exemplo_db?sslmode=disable")
+	conn, err := sqlx.Open("postgres", "postgres://postgres:12345678@localhost:5432/postgres?sslmode=disable")
 	return conn, err
 }
 
